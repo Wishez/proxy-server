@@ -1,0 +1,14 @@
+{
+  "frontConfig": {
+    "realm": "tele2-b2c",
+    "url": "http://t2ru-ds-test-07:2081/auth",
+    "clientId": "digital-suite-web-app",
+    "updateTimeBeforeExpiration": 60
+  },
+  "serverConfig": {
+    "grant_type": "refresh_token",
+    "client_id": "digital-suite-web-app",
+    "url": "http://t2ru-ds-test-07:2081/auth/realms/tele2-b2c/protocol/openid-connect/token",
+    "updateTimeBeforeExpiration": 60
+  }
+}

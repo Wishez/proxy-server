@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Middleware rest server</title>
+  <style>
+    ul {
+      list-style: none;
+    }
+
+    li {
+      padding: 1em;
+      border: 1px solid darkmagenta;
+      margin-right: 1em;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>The Middleware rest service!</h1>
+  </header>
+  
+  <main>
+      <p>Test special characters &Omega;&Psi;&Chi;&nbsp;&copy;</p>
+      <button id="makeRequestToCookies">Make to cookies</button>
+
+      <ul id="resultList"></ul>
+  </main>
+
+  <script src="/axios/dist/axios.min.js"></script>
+  <script>
+    listen(window, () => {
+      console.log('loaded');
+      listen(getEl('#makeRequestToCookies'), getCookies)
+    }, 'load')
+    
+    function listen(element, callback, event = 'click') {
+      element.addEventListener(event, callback)
+    }
+    
+    function getEl(selector) {
+      return document.querySelector(selector)
+    }
+    
+    let updateResultListCounter = 1
+    function getCookies() {
+      const resultList = getEl('#resultList')
+      axios.get('/api/cookies')
+      .then(response => {
+        let oldResultsHtml = resultList.innerHTML
+        const isResultListFullfill = updateResultListCounter % 7 === 0
+        console.log(isResultListFullfill, updateResultListCounter)
+        if (isResultListFullfill) {
+          oldResultsHtml = ''
+          updateResultListCounter = 1
+        } else {
+          updateResultListCounter += 1
+        }
+        resultList.innerHTML = `${oldResultsHtml}${getJsonResultHtml(response.data)}`
+      })
+    }
+
+    function getJsonResultHtml(json) {
+      return `
+        <li>
+          <pre>
+            ${JSON.stringify(json, null, 4)}
+          </pre>
+        </li>
+      `
+    }
+  </script>
+</body>
+</html>
